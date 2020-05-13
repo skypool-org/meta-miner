@@ -57,15 +57,8 @@ const hashrate_regexes = [
 const bench_algos = [
   "rx/0",
   "rx/wow",
-  "defyx",
-  "cn/r",
-  "cn-pico/trtl",
-  "cn-heavy/xhv",
-  "cn/gpu",
-  "argon2/chukwa",
-  "k12",
-  "c29s",
-  "c29v",
+  "rx/arq",
+  "astrobwt",
 ];
 
 // algo and their perf that can be derived from thier main algo perf
@@ -106,8 +99,13 @@ function bench_algo_deps(bench_algo, perf) {
      case "rx/0": return {
        "rx/0":          perf,
        "rx/loki":       perf,
-       "rx/v":          perf,
      };
+     case "rx/arq": return {
+       "rx/arq":        perf,
+     }
+     case "astrobwt": return {
+       "astrobwt":      perf,
+     }
      case "defyx": return {
        "defyx":         perf,
      };
@@ -140,16 +138,9 @@ let c = {
   algos: {},
   algo_perf: {
     "rx/0":          0,
-    "cn/r":          0,
-    "cn/gpu":        0,
-    "cn-heavy/xhv":  0,
-    "cn-pico/trtl":  0,
     "rx/wow":        0,
-    "defyx":         0,
-    "argon2/chukwa": 0,
-    "k12":           0,
-    "c29s":          0,
-    "c29v":          0,
+    "rx/arq":        0,
+    "astrobwt":      0,
   },
   algo_min_time: 0,
   user: null,
@@ -426,7 +417,7 @@ function start_miner(cmd, out_cb) {
    let exe = args.shift();
    return start_miner_raw(exe, args, out_cb);
 }
- 
+
 // *** Pool socket processing
 
 function connect_pool(pool_num, pool_ok_cb, pool_new_msg_cb, pool_err_cb) {
@@ -447,7 +438,7 @@ function connect_pool(pool_num, pool_ok_cb, pool_new_msg_cb, pool_err_cb) {
     );
   });
 
-  let is_pool_ok = false; 
+  let is_pool_ok = false;
   let pool_data_buff = "";
 
   pool_socket.on('data', function (msg) {
@@ -476,7 +467,7 @@ function connect_pool(pool_num, pool_ok_cb, pool_new_msg_cb, pool_err_cb) {
       else err("Ignoring pool (" + c.pools[pool_num] + ") message that does not contain job: " + JSON.stringify(json));
     }
     pool_data_buff = incomplete_line;
-    
+
   });
 
   pool_socket.on('end', function() {
@@ -493,7 +484,7 @@ function connect_pool(pool_num, pool_ok_cb, pool_new_msg_cb, pool_err_cb) {
     pool_err_cb(pool_num);
   });
 }
-           
+
 // *** connect_pool function callbacks
 
 function set_main_pool_check_timer() {
@@ -582,7 +573,7 @@ function pool_new_msg(is_new_job, json) {
         curr_miner_socket.write(JSON.stringify(grin_json) + "\n");
       }
     } else {
-      curr_miner_socket.write(JSON.stringify(json) + "\n"); 
+      curr_miner_socket.write(JSON.stringify(json) + "\n");
     }
   }
 }
@@ -765,7 +756,7 @@ function do_miner_perf_runs(cb) {
               tree_kill(miner_proc.pid);
               break;
             } else {
-              log("Read performance for " + algo + " algo to " + hashrate + ", waiting for " + 
+              log("Read performance for " + algo + " algo to " + hashrate + ", waiting for " +
                      (nr_prints_needed - nr_prints_found) + " more print(s).");
             }
           }

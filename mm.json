@@ -1,0 +1,27 @@
+{
+ "miner_host": "127.0.0.1",
+ "miner_port": 3333,
+ "pools": [
+  "auto.skypool.org:4444"
+ ],
+ "algos": {
+  "rx/0": "./xmrig --config=config.json",
+  "rx/wow": "./xmrig --config=config.json",
+  "rx/loki": "./xmrig --config=config.json",
+  "rx/arq": "./xmrig --config=config.json",
+  "astrobwt": "./xmrig --config=config.json"
+ },
+ "algo_perf": {
+  "rx/0": 0,
+  "rx/wow": 0,
+  "rx/arq": 0,
+  "astrobwt": 0,
+  "rx/loki": 0
+ },
+ "algo_min_time": 0,
+ "user": "YOUR_WALLET_ADDRESS",
+ "pass": "x",
+ "log_file": null,
+ "watchdog": 600,
+ "hashrate_watchdog": 0
+}
