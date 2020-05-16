@@ -58,6 +58,7 @@ const bench_algos = [
   "rx/0",
   "rx/wow",
   "rx/arq",
+  "rx/sfx",
   "astrobwt",
 ];
 
@@ -103,6 +104,9 @@ function bench_algo_deps(bench_algo, perf) {
      case "rx/arq": return {
        "rx/arq":        perf,
      }
+     case "rx/sfx": return {
+       "rx/sfx":        perf,
+     };
      case "astrobwt": return {
        "astrobwt":      perf,
      }
@@ -140,6 +144,7 @@ let c = {
     "rx/0":          0,
     "rx/wow":        0,
     "rx/arq":        0,
+    "rx/sfx":        0,
     "astrobwt":      0,
   },
   algo_min_time: 0,
